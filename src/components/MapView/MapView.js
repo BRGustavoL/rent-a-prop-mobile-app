@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, { Circle, Marker } from 'react-native-maps';
 import { StyleSheet, View, Dimensions, TouchableOpacity, Text } from 'react-native';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -11,7 +11,39 @@ export default function MapViewComponent() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   })
+  const [circlePos, setCirclePos] = useState({
+    latitude: 37.78825,
+    longitude: -122.4324,
+    latCircle: {
+      latitude: 37.78825,
+      longitude: -122.4324,
+    },
+  })
+  const defaultLabel = 'Localização marcada'
+  const [cardText, setCardText] = useState({
+    text: defaultLabel
+  })
   const mapView = useRef(null)
+
+  const setOnEventLocation = (e) => {
+    setPosition({
+      ...position,
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+    }),
+    setCirclePos({
+      latitude: e.nativeEvent.coordinate.latitude,
+      longitude: e.nativeEvent.coordinate.longitude,
+      latCircle: {
+        latitude: e.nativeEvent.coordinate.latitude,
+        longitude: e.nativeEvent.coordinate.longitude
+      }
+    })
+    setCardText({
+      text: defaultLabel
+    })
+  }
+
   const requestUserLocation = async () => {
     let { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
@@ -24,7 +56,18 @@ export default function MapViewComponent() {
       longitude: location.coords.longitude,
       latitudeDelta: location.coords.latitude,
       longitudeDelta: location.coords.longitude,
-    });
+    })
+    setCirclePos({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latCircle: {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude
+      }
+    }),
+    setCardText({
+      text: 'Você está aqui'
+    })
     if (mapView.current) {
       mapView.current.animateCamera({
         center: {
@@ -44,20 +87,24 @@ export default function MapViewComponent() {
         region={position}
         ref={mapView}
         onPress={e =>
-          setPosition({
-            ...position,
-            latitude: e.nativeEvent.coordinate.latitude,
-            longitude: e.nativeEvent.coordinate.longitude,
-          })
+          setOnEventLocation(e)
         }>
         <Marker
           coordinate={position}
           title={'Você está aqui...'}
           pinColor="blue"
         />
+        <Circle
+          key = { (circlePos.latitude + circlePos.longitude).toString() }
+          center = { circlePos.latCircle }
+          radius = { 600 }
+          strokeWidth = { 1 }
+          strokeColor = { '#0B42FF' }
+          fillColor = { 'rgba(230,238,255,0.5)' }
+        />
       </MapView>
       <View style={styles.positonBox}>
-        <Text style={styles.positonBoxTitle}>Você está aqui</Text>
+        <Text style={styles.positonBoxTitle}>{cardText.text}</Text>
         <View style={styles.positonBoxLatLon}>
           <Text style={{fontSize: 16}}>Lat.</Text>
           <Text style={{fontSize: 16}}>{position.latitude}</Text>
