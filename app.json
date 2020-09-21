@@ -21,6 +21,14 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "android": {
+      "package": "br.brgustavol.programavaomoveltrabalho1",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyAJB1L6CjwZW1BH0WUk4U-RmJArfBPRZ90"
+        }
+      }
     }
   }
 }

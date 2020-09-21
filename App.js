@@ -1,14 +1,13 @@
 import { StatusBar } from 'expo-status-bar'
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import Navbar from './src/components/Navbar/Navbar'
+import { StyleSheet, View } from 'react-native'
+import MapView from './src/components/MapView/MapView'
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <Navbar name="Gustavo"></Navbar>
       <StatusBar style="auto" />
+      <MapView />
     </View>
   )
 }
