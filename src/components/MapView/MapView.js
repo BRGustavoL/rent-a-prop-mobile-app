@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import MapView, { Marker } from 'react-native-maps';
-import { StyleSheet, View, Dimensions, Text } from 'react-native';
+import { StyleSheet, View, Dimensions, TouchableOpacity, Text } from 'react-native';
+import * as Location from 'expo-location';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 export default function MapViewComponent() {
   const [position, setPosition] = useState({
@@ -9,12 +11,38 @@ export default function MapViewComponent() {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   })
+  const mapView = useRef(null)
+  const requestUserLocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== 'granted') {
+      console.log('Permission to access location was denied');
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setPosition({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: location.coords.latitude,
+      longitudeDelta: location.coords.longitude,
+    });
+    if (mapView.current) {
+      mapView.current.animateCamera({
+        center: {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        },
+        heading: 100,
+        zoom: 18
+      }, 5000)
+    }
+  }
 
   return (
     <View style={styles.container}>
       <MapView
         style={styles.mapStyle}
         region={position}
+        ref={mapView}
         onPress={e =>
           setPosition({
             ...position,
@@ -24,12 +52,12 @@ export default function MapViewComponent() {
         }>
         <Marker
           coordinate={position}
-          title={'Marcador'}
-          description={'Testando o marcador no mapa'}
+          title={'Você está aqui...'}
+          pinColor="blue"
         />
       </MapView>
       <View style={styles.positonBox}>
-        <Text style={styles.positonBoxTitle}>Sua Localização</Text>
+        <Text style={styles.positonBoxTitle}>Você está aqui</Text>
         <View style={styles.positonBoxLatLon}>
           <Text style={{fontSize: 16}}>Lat.</Text>
           <Text style={{fontSize: 16}}>{position.latitude}</Text>
@@ -39,6 +67,13 @@ export default function MapViewComponent() {
           <Text style={{fontSize: 16}}>{position.longitude}</Text>
         </View>
       </View>
+      <TouchableOpacity
+        style={styles.locationButton}
+        onPress={() => {
+          requestUserLocation();
+        }}>
+        <Icon name="my-location" color={'#fff'} size={30} />
+      </TouchableOpacity>
     </View>
   )
 }
@@ -69,11 +104,23 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 22,
     fontWeight: 'bold',
-    color: '#FF5A60',
+    color: '#0B42FF',
     marginBottom: 10
   },
   positonBoxLatLon: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+  },
+  locationButton: {
+    backgroundColor: '#0B42FF',
+    borderRadius: 150,
+    marginTop: -20,
+    width: 50,
+    height: 50,
+    alignSelf: 'center',
+    justifyContent: 'center',
+    alignItems: 'center',
+    shadowColor: '#000',
+    elevation: 8,
   },
 });
