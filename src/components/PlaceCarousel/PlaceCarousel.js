@@ -15,17 +15,17 @@ export default class App extends React.Component {
           carouselItems: [
           {
             title: "Edifício Barry Colins",
-            distance: "Há 348m de você",
+            distance: "A 348m de você",
             image: { uri: 'https://freight.cargo.site/t/original/i/8db9435752ceba38f22bd555be59ed9a6ee1452c124797cc631d382d68a20c86/Copy-of-171001_101_008_web.jpg' }
           },
           {
             title: "Cabana Johnson",
-            distance: "Há 3km de você",
+            distance: "A 3km de você",
             image: { uri: 'https://media.afar.com/uploads/images/afar_posts/images/dHuDZQ8qbL/original_open-uri20200303-6231-187yjgw?1583268455' }
           },
           {
             title: "Edifício Montreal",
-            distance: "Há 1km de você",
+            distance: "A 1km de você",
             image: { uri: 'https://www.galeriadaarquitetura.com.br/Img/projeto/702x415/388/edificio-360%C2%B0395.jpg' }
           }
         ]

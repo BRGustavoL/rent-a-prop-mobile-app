@@ -42,10 +42,17 @@ export default styles = StyleSheet.create({
     shadowColor: '#000',
     elevation: 8,
   },
+  // actionButtons: {
+  //   flex: 1,
+  //   width: Dimensions.get('window').width - 240,
+  //   flexDirection: 'row',
+  //   justifyContent: 'space-between',
+  // },
   actionButtons: {
-    flex: 1,
-    width: Dimensions.get('window').width - 240,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    width: Dimensions.get('window').width - 40,
+    backgroundColor: 'rgba(255, 255, 255, 1)',
+    borderRadius: 6
   }
 })

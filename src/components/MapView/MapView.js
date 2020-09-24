@@ -5,6 +5,7 @@ import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './Styles'
 import PlaceCarousel from '../PlaceCarousel/PlaceCarousel'
+import TrackButton from '../TrackButton/TrackButton'
 
 export default function MapViewComponent() {
   const defaultLocation = {
@@ -159,6 +160,21 @@ export default function MapViewComponent() {
           <Text style={{fontSize: 16}}>Lon.</Text>
           <Text style={{fontSize: 16}}>{position.longitude}</Text>
         </View> */}
+      </View>
+      <View style={styles.actionButtons}>
+        <TouchableOpacity onPress={() => { requestUserLocation(); }}>
+          <TrackButton
+            color="ghost"
+            status="primary"
+            size="giant"
+            label="Home"
+          />
+        </TouchableOpacity>
+        <TrackButton
+          color="ghost"
+          status="danger"
+          size="giant"
+          label="Search"/>
       </View>
       
       {/* <View style={styles.actionButtons}>
