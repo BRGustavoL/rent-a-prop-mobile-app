@@ -1,23 +1,43 @@
 import React, { useState, useRef } from 'react';
 import MapView, { Circle, Marker } from 'react-native-maps';
-import { StyleSheet, View, Dimensions, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity, Text, Alert } from 'react-native';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import styles from './Styles'
+import PlaceCarousel from '../PlaceCarousel/PlaceCarousel'
 
 export default function MapViewComponent() {
-  const [position, setPosition] = useState({
+  const defaultLocation = {
     latitude: 37.78825,
     longitude: -122.4324,
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
+  }
+
+  const [position, setPosition] = useState({
+    latitude: defaultLocation.latitude,
+    longitude: defaultLocation.longitude,
+    latitudeDelta: defaultLocation.latitudeDelta,
+    longitudeDelta: defaultLocation.longitudeDelta,
+    id: '1'
   })
+
+  const [additionalMarker, setAdditionalMarker] = useState({
+    latitude: defaultLocation.latitude,
+    longitude: defaultLocation.longitude,
+    latitudeDelta: defaultLocation.latitudeDelta,
+    longitudeDelta: defaultLocation.longitudeDelta,
+    id: '4'
+  })
+
   const [circlePos, setCirclePos] = useState({
-    latitude: 37.78825,
-    longitude: -122.4324,
+    latitude: defaultLocation.latitude,
+    longitude: defaultLocation.longitude,
     latCircle: {
-      latitude: 37.78825,
-      longitude: -122.4324,
+      latitude: defaultLocation.latitude,
+      longitude: defaultLocation.longitude,
     },
+    radius: 600
   })
   const defaultLabel = 'Localização marcada'
   const [cardText, setCardText] = useState({
@@ -25,11 +45,12 @@ export default function MapViewComponent() {
   })
   const mapView = useRef(null)
 
-  const setOnEventLocation = (e) => {
+  const setOnEventLocation = (e) => { // TOQUE NA TELA
     setPosition({
       ...position,
       latitude: e.nativeEvent.coordinate.latitude,
       longitude: e.nativeEvent.coordinate.longitude,
+      id: 'not-home'
     }),
     setCirclePos({
       latitude: e.nativeEvent.coordinate.latitude,
@@ -37,25 +58,45 @@ export default function MapViewComponent() {
       latCircle: {
         latitude: e.nativeEvent.coordinate.latitude,
         longitude: e.nativeEvent.coordinate.longitude
-      }
+      },
+      radius: 600
     })
     setCardText({
       text: defaultLabel
     })
   }
 
-  const requestUserLocation = async () => {
+  const searchMarkers = () => {
+    const text = 'Você está aqui'
+    if (cardText.text === text) {
+      console.log('Posição Usuário')
+      console.log(position)
+    } else {
+      Alert.alert(
+        "Ops...",
+        "Busque por sua localização antes de buscar os imóveis :)",
+        [
+          { text: "Ok, entendi", onPress: () => console.log("OK Pressed") }
+        ],
+        { cancelable: false }
+      )
+    }
+  }
+
+  const requestUserLocation = async () => { // TOQUE NO BOTÃO, DIRECIONA PARA LOCALIZAÇÃO ATUAL
     let { status } = await Location.requestPermissionsAsync();
     if (status !== 'granted') {
       console.log('Permission to access location was denied');
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync({})
+    
     setPosition({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: location.coords.latitude,
       longitudeDelta: location.coords.longitude,
+      id: '3'
     })
     setCirclePos({
       latitude: location.coords.latitude,
@@ -63,7 +104,8 @@ export default function MapViewComponent() {
       latCircle: {
         latitude: location.coords.latitude,
         longitude: location.coords.longitude
-      }
+      },
+      radius: 600
     }),
     setCardText({
       text: 'Você está aqui'
@@ -75,8 +117,8 @@ export default function MapViewComponent() {
           longitude: location.coords.longitude,
         },
         heading: 100,
-        zoom: 18
-      }, 5000)
+        zoom: 14
+      }, 2000)
     }
   }
 
@@ -86,25 +128,29 @@ export default function MapViewComponent() {
         style={styles.mapStyle}
         region={position}
         ref={mapView}
-        onPress={e =>
-          setOnEventLocation(e)
-        }>
+        onPress={ e => setOnEventLocation(e) }>
         <Marker
           coordinate={position}
           title={'Você está aqui...'}
-          pinColor="blue"
+          key={position.id}
+        />
+        <Marker
+          coordinate={additionalMarker}
+          title={'Imóvel 1'}
+          key={additionalMarker.id}
         />
         <Circle
           key = { (circlePos.latitude + circlePos.longitude).toString() }
           center = { circlePos.latCircle }
-          radius = { 600 }
+          radius = { circlePos.radius }
           strokeWidth = { 1 }
           strokeColor = { '#0B42FF' }
           fillColor = { 'rgba(230,238,255,0.5)' }
         />
       </MapView>
       <View style={styles.positonBox}>
-        <Text style={styles.positonBoxTitle}>{cardText.text}</Text>
+        <PlaceCarousel />
+        {/* <Text style={styles.positonBoxTitle}>{cardText.text}</Text>
         <View style={styles.positonBoxLatLon}>
           <Text style={{fontSize: 16}}>Lat.</Text>
           <Text style={{fontSize: 16}}>{position.latitude}</Text>
@@ -112,62 +158,26 @@ export default function MapViewComponent() {
         <View style={styles.positonBoxLatLon}>
           <Text style={{fontSize: 16}}>Lon.</Text>
           <Text style={{fontSize: 16}}>{position.longitude}</Text>
-        </View>
+        </View> */}
       </View>
-      <TouchableOpacity
-        style={styles.locationButton}
-        onPress={() => {
-          requestUserLocation();
-        }}>
-        <Icon name="my-location" color={'#fff'} size={30} />
-      </TouchableOpacity>
+      
+      {/* <View style={styles.actionButtons}>
+        
+        <TouchableOpacity
+          style={styles.locationButton}
+          onPress={() => {
+            requestUserLocation();
+          }}>
+          <Icon name="my-location" color={'#fff'} size={30} />
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.locationButton}
+          onPress={() => {
+            searchMarkers();
+          }}>
+          <Icon name="search" color={'#fff'} size={30} />
+        </TouchableOpacity>
+      </View> */}
     </View>
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mapStyle: {
-    position: 'absolute',
-    width: Dimensions.get('window').width,
-    top: 0,
-    bottom: 0
-  },
-  positonBox: {
-    backgroundColor: '#fff',
-    borderRadius: 20,
-    marginTop: 600,
-    marginHorizontal: 40,
-    padding: 25,
-    shadowColor: '#000',
-    elevation: 5,
-  },
-  positonBoxTitle: {
-    textAlign: 'center',
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: '#0B42FF',
-    marginBottom: 10
-  },
-  positonBoxLatLon: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  locationButton: {
-    backgroundColor: '#0B42FF',
-    borderRadius: 150,
-    marginTop: -20,
-    width: 50,
-    height: 50,
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    shadowColor: '#000',
-    elevation: 8,
-  },
-});
