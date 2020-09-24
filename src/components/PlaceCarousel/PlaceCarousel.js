@@ -1,46 +1,50 @@
 import * as React from 'react';
 import {
   Text, 
-  View } from 'react-native';
+  View,
+  ImageBackground } from 'react-native';
 
 import Carousel from 'react-native-snap-carousel';
-import { StyleSheet } from 'react-native';
+import styles from './Styles';
 
 export default class App extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-          activeIndex:0,
+          activeIndex: 0,
           carouselItems: [
           {
-              title:"Item 1",
-              text: "Text 1",
+            title: "Edifício Barry Colins",
+            distance: "Há 348m de você",
+            image: { uri: 'https://freight.cargo.site/t/original/i/8db9435752ceba38f22bd555be59ed9a6ee1452c124797cc631d382d68a20c86/Copy-of-171001_101_008_web.jpg' }
           },
           {
-              title:"Item 2",
-              text: "Text 2",
+            title: "Cabana Johnson",
+            distance: "Há 3km de você",
+            image: { uri: 'https://media.afar.com/uploads/images/afar_posts/images/dHuDZQ8qbL/original_open-uri20200303-6231-187yjgw?1583268455' }
           },
           {
-              title:"Item 3",
-              text: "Text 3",
-          },
-          {
-              title:"Item 4",
-              text: "Text 4",
-          },
-          {
-              title:"Item 5",
-              text: "Text 5",
-          },
+            title: "Edifício Montreal",
+            distance: "Há 1km de você",
+            image: { uri: 'https://www.galeriadaarquitetura.com.br/Img/projeto/702x415/388/edificio-360%C2%B0395.jpg' }
+          }
         ]
       }
     }
 
-    _renderItem({item,index}){
+    _renderItem({item, index}){
       return (
         <View style={styles.item}>
-          <Text style={{fontSize: 30}}>{item.title}</Text>
-          <Text>{item.text}</Text>
+          <View>
+            <ImageBackground source={item.image} style={styles.imageConfig}></ImageBackground>
+          </View>
+          <View>
+            <Text style={styles.title}>{item.title}</Text>
+            <View style={styles.mapInfo}>
+              <ImageBackground source={{ uri: 'https://www.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png' }} style={styles.markerImage}></ImageBackground>
+              <Text style={styles.distanceText}>{item.distance}</Text>
+            </View>
+          </View>
         </View>
       )
     }
@@ -53,26 +57,10 @@ export default class App extends React.Component {
           ref={ref => this.carousel = ref}
           data={this.state.carouselItems}
           sliderWidth={400}
-          sliderHeight={10}
-          itemWidth={200}
-          itemHeight={10}
+          itemWidth={360}
           renderItem={this._renderItem}
           onSnapToItem = { index => this.setState({activeIndex:index}) }
         />
       );
     }
 }
-
-const styles = StyleSheet.create({
-  carousel: {
-    backgroundColor: 'black',
-    elevation: 5,
-    shadowColor: '#000',
-  },
-  item: {
-    borderRadius: 5,
-    padding: 50,
-    marginLeft: 25,
-    marginRight: 25,
-  }
-})

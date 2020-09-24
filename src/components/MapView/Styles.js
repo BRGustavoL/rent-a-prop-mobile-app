@@ -14,8 +14,10 @@ export default styles = StyleSheet.create({
     bottom: 0
   },
   positonBox: {
-    marginTop: 600,
-    padding: 60,
+    marginTop: 568,
+    width: Dimensions.get('window').width,
+    justifyContent: 'flex-start',
+    marginBottom: 40
   },
   positonBoxTitle: {
     textAlign: 'center',
