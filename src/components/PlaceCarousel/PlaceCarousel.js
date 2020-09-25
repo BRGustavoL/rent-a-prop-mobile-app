@@ -1,13 +1,9 @@
-import * as React from 'react';
-import {
-  Text, 
-  View,
-  ImageBackground } from 'react-native';
+import React, { Component } from 'react'
+import { Text, View, ImageBackground } from 'react-native'
+import Carousel from 'react-native-snap-carousel'
+import styles from './Styles'
 
-import Carousel from 'react-native-snap-carousel';
-import styles from './Styles';
-
-export default class App extends React.Component {
+export default class PlaceCarousel extends Component {
     constructor(props){
         super(props);
         this.state = {
