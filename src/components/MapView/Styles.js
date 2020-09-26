@@ -42,17 +42,49 @@ export default styles = StyleSheet.create({
     shadowColor: '#000',
     elevation: 8,
   },
-  // actionButtons: {
-  //   flex: 1,
-  //   width: Dimensions.get('window').width - 240,
-  //   flexDirection: 'row',
-  //   justifyContent: 'space-between',
-  // },
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: Dimensions.get('window').width - 40,
-    backgroundColor: 'rgba(255, 255, 255, 1)',
+    height: 60,
     borderRadius: 6
+  },
+  actionButtonsWithoutPlaces: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: Dimensions.get('window').width - 40,
+    height: 60,
+    borderRadius: 6,
+    marginTop: 100
+  },
+  placeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 20,
+    paddingLeft: 60,
+    paddingRight: 60,
+    paddingBottom: 20,
+    borderRadius: 14,
+    backgroundColor: '#FF5A5F',
+  },
+  placeButtonActive: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 20,
+    paddingLeft: 60,
+    paddingRight: 60,
+    paddingBottom: 20,
+    borderRadius: 14,
+    backgroundColor: '#484848',
+  },
+  homeButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 14,
+    backgroundColor: 'white',
+    borderRadius: 200
+  },
+  homeButtonText: {
+    color: 'blue',
   }
 })

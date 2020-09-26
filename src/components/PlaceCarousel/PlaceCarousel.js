@@ -5,26 +5,9 @@ import styles from './Styles'
 
 export default class PlaceCarousel extends Component {
     constructor(props){
-        super(props);
+        super(props)
         this.state = {
-          activeIndex: 0,
-          carouselItems: [
-          {
-            title: "Edifício Barry Colins",
-            distance: "A 348m de você",
-            image: { uri: 'https://freight.cargo.site/t/original/i/8db9435752ceba38f22bd555be59ed9a6ee1452c124797cc631d382d68a20c86/Copy-of-171001_101_008_web.jpg' }
-          },
-          {
-            title: "Cabana Johnson",
-            distance: "A 3km de você",
-            image: { uri: 'https://media.afar.com/uploads/images/afar_posts/images/dHuDZQ8qbL/original_open-uri20200303-6231-187yjgw?1583268455' }
-          },
-          {
-            title: "Edifício Montreal",
-            distance: "A 1km de você",
-            image: { uri: 'https://www.galeriadaarquitetura.com.br/Img/projeto/702x415/388/edificio-360%C2%B0395.jpg' }
-          }
-        ]
+          activeIndex: 0
       }
     }
 
@@ -51,11 +34,11 @@ export default class PlaceCarousel extends Component {
           slideStyle={styles.carousel}
           layout={"default"}
           ref={ref => this.carousel = ref}
-          data={this.state.carouselItems}
+          data={this.props.places}
           sliderWidth={400}
           itemWidth={360}
           renderItem={this._renderItem}
-          onSnapToItem = { index => this.setState({activeIndex:index}) }
+          onSnapToItem = { index => this.setState({ activeIndex: index }) }
         />
       );
     }
