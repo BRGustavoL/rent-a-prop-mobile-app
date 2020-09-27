@@ -8,6 +8,7 @@ import PlaceCarousel from '../PlaceCarousel/PlaceCarousel'
 import { bindActionCreators } from 'redux'
 import * as userLocationAction from '../../redux/actions/userLocation'
 import { connect } from 'react-redux'
+import { getDistance } from 'geolib'
 
 class MapViewComponent extends React.Component {
 
@@ -36,10 +37,10 @@ class MapViewComponent extends React.Component {
       {
         id: 1,
         title: "Edifício Barry Colins",
-        distance: "A 348m de você",
+        distance: 0,
         coords: {
-          latitude: 37.77514238043909,
-          longitude: -122.43987869471312,
+          latitude: -27.101241867015556,
+          longitude: -52.63208828866482,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
@@ -48,10 +49,10 @@ class MapViewComponent extends React.Component {
       {
         id: 2,
         title: "Cabana Johnson",
-        distance: "A 3km de você",
+        distance: 0,
         coords: {
-          latitude: 37.76495074776789,
-          longitude: -122.43793442845346,
+          latitude: -27.099906830520297,
+          longitude: -52.625152096152306,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
@@ -60,10 +61,10 @@ class MapViewComponent extends React.Component {
       {
         id: 3,
         title: "Edifício Montreal",
-        distance: "A 1km de você",
+        distance: 0,
         coords: {
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: -27.087274382887554,
+          longitude: -52.62402724474668,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
@@ -72,10 +73,10 @@ class MapViewComponent extends React.Component {
       {
         id: 4,
         title: "Casa J. América 337D",
-        distance: "A 1.4km de você",
+        distance: 0,
         coords: {
           latitude: 37.78825,
-          longitude: -122.4324,
+          longitude: -119.4324,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
@@ -84,10 +85,10 @@ class MapViewComponent extends React.Component {
       {
         id: 5,
         title: "UNOESC",
-        distance: "A 8km de você",
+        distance: 0,
         coords: {
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: -27.1345326,
+          longitude: -52.5993848,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
@@ -96,10 +97,10 @@ class MapViewComponent extends React.Component {
       {
         id: 6,
         title: "IL Centenário",
-        distance: "A 2km de você",
+        distance: 0,
         coords: {
-          latitude: 37.78825,
-          longitude: -122.4324,
+          latitude: -27.06625525367231,
+          longitude: -52.631852589547634,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
@@ -124,12 +125,45 @@ class MapViewComponent extends React.Component {
     )
   }
 
+  updateItemsDistance = () => {
+    const items = this.state.carouselItems
+    const origin = {
+      latitude: this.state.defaulCoords.coords.latitude,
+      longitude: this.state.defaulCoords.coords.longitude
+    }
+    let remoduledCarouselItems = []
+    let marker = {}
+    items.forEach(el => {
+      marker = {
+        latitude: el.coords.latitude,
+        longitude: el.coords.longitude
+      }
+      remoduledCarouselItems.push({
+        id: el.id,
+        title: el.title,
+        distance: Number(this.returnCalculatedDistance(origin, marker), 10),
+        coords: el.coords,
+        image: el.image
+      })
+    })
+    this.setState({
+      carouselItems: remoduledCarouselItems
+    })
+  }
+
   NearMeButton = () => {
     return (this.state.isNearMeActivated) ? this.NearMeButtonActive() : this.NearMeButtonInactive()
   }
 
   PlaceCarouselComponent = () => {
     return (this.state.isUserLocation) ? <PlaceCarousel places={this.state.carouselItems}/> : null
+  }
+
+  returnCalculatedDistance = (origin, marker) => {
+    return getDistance(
+      {latitude: origin.latitude, longitude: origin.longitude},
+      {latitude: marker.latitude, longitude: marker.longitude}
+    )
   }
 
   setOnEventLocation = (e) => { // TOQUE NA TELA
@@ -211,6 +245,8 @@ class MapViewComponent extends React.Component {
     this.props.updateUserLocation({
       location: position
     })
+
+    this.updateItemsDistance()
   }
 
   render () {
