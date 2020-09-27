@@ -1,6 +1,6 @@
 import * as React from 'react';
 import MapView, { Circle, Marker } from 'react-native-maps';
-import { View, TouchableOpacity } from 'react-native';
+import { View, TouchableOpacity, Text } from 'react-native';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './Styles'
@@ -11,7 +11,6 @@ import { connect } from 'react-redux'
 import { getDistance } from 'geolib'
 
 class MapViewComponent extends React.Component {
-
   state = {
     isNearMeActivated: false,
     isUserLocation: false,
@@ -35,7 +34,7 @@ class MapViewComponent extends React.Component {
     },
     carouselItems: [
       {
-        id: 1,
+        id: 0,
         title: "Edifício Barry Colins",
         distance: 0,
         coords: {
@@ -47,7 +46,7 @@ class MapViewComponent extends React.Component {
         image: { uri: 'https://freight.cargo.site/t/original/i/8db9435752ceba38f22bd555be59ed9a6ee1452c124797cc631d382d68a20c86/Copy-of-171001_101_008_web.jpg' }
       },
       {
-        id: 2,
+        id: 1,
         title: "Cabana Johnson",
         distance: 0,
         coords: {
@@ -59,7 +58,7 @@ class MapViewComponent extends React.Component {
         image: { uri: 'https://media.afar.com/uploads/images/afar_posts/images/dHuDZQ8qbL/original_open-uri20200303-6231-187yjgw?1583268455' }
       },
       {
-        id: 3,
+        id: 2,
         title: "Edifício Montreal",
         distance: 0,
         coords: {
@@ -71,19 +70,19 @@ class MapViewComponent extends React.Component {
         image: { uri: 'https://www.galeriadaarquitetura.com.br/Img/projeto/702x415/388/edificio-360%C2%B0395.jpg' }
       },
       {
-        id: 4,
+        id: 3,
         title: "Casa J. América 337D",
         distance: 0,
         coords: {
-          latitude: 37.78825,
-          longitude: -119.4324,
+          latitude: -27.100448248983373,
+          longitude: -52.63705104589462,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
         image: { uri: 'https://s2.glbimg.com/2DaQ8YKTdA6NGYgA28eVbmQ6g1k=/512x320/smart/e.glbimg.com/og/ed/f/original/2020/01/20/leve-e-iluminada-esta-casa-na-bahia-mistura-estrutura-metalica-madeira-e-vidro_9.jpg' }
       },
       {
-        id: 5,
+        id: 4,
         title: "UNOESC",
         distance: 0,
         coords: {
@@ -95,23 +94,35 @@ class MapViewComponent extends React.Component {
         image: { uri: 'https://www.unoesc.edu.br/images/uploads/unoesc/410/foto_anuncio__large.jpg' }
       },
       {
-        id: 6,
+        id: 5,
         title: "IL Centenário",
         distance: 0,
         coords: {
-          latitude: -27.06625525367231,
-          longitude: -52.631852589547634,
+          latitude: -27.106504,
+          longitude: -52.6178051,
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421
         },
         image: { uri: 'https://i.imgur.com/Paz4b4E.jpg' }
+      },
+      {
+        id: 6,
+        title: "Casa do Tony Stark",
+        distance: 0,
+        coords: {
+          latitude: -27.092489372754393,
+          longitude: -52.61805530637503,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421
+        },
+        image: { uri: 'https://media.comicbook.com/uploads1/2015/06/iron-man-aeral-700x467-138304.png' }
       }
     ]
   }
 
   NearMeButtonInactive = () => {
     return (
-      <TouchableOpacity style={styles.placeButton} onPress={ () => this.setState({ isNearMeActivated: true }) }>
+      <TouchableOpacity style={styles.placeButton} onPress={ () => this.rentPlace() }>
         <Icon name="near-me" color={'white'} size={30} />
       </TouchableOpacity>
     )
@@ -123,6 +134,28 @@ class MapViewComponent extends React.Component {
         <Icon name="clear" color={'white'} size={30} />
       </TouchableOpacity>
     )
+  }
+
+  rentPlace = () => {
+    this.setState({ isNearMeActivated: true })
+    let aux = {}
+    this.state.carouselItems.forEach(el => {
+      if (el.id === this.props.carouselPosition.index) {
+        aux = el.coords
+      }
+    })
+    console.log(aux)
+    this.mapRef.animateCamera({
+      center: {
+        latitude: aux.latitude,
+        longitude: aux.longitude,
+      },
+      heading: 100,
+      zoom: 16
+    }, 2000)
+    setTimeout(() => {
+      this.setState({ isNearMeActivated: false })
+    }, 1000)
   }
 
   updateItemsDistance = () => {
@@ -167,7 +200,6 @@ class MapViewComponent extends React.Component {
   }
 
   setOnEventLocation = (e) => { // TOQUE NA TELA
-    console.log(e.nativeEvent.coordinate)
     this.setState({
       defaulCoords: {
         id: Math.random(),
@@ -242,7 +274,7 @@ class MapViewComponent extends React.Component {
 
     this.setState({ isUserLocation: true })
 
-    this.props.updateUserLocation({
+    this.props.setUserLocation({
       location: position
     })
 
@@ -262,6 +294,7 @@ class MapViewComponent extends React.Component {
             coordinate={this.state.defaulCoords.coords}
             title={'Você está aqui...'}
             key={this.state.defaulCoords.id}
+            pinColor="#FC642D"
           />
           {this.state.carouselItems.map((prop) => {
             return (
@@ -269,6 +302,7 @@ class MapViewComponent extends React.Component {
                 coordinate={prop.coords}
                 title={prop.title}
                 key={prop.id}
+                pinColor="#FF5A5F"
               />
             );
           })}
@@ -277,8 +311,8 @@ class MapViewComponent extends React.Component {
             center = { this.state.circleCoords.latCircle }
             radius = { this.state.circleCoords.radius }
             strokeWidth = { 1 }
-            strokeColor = { '#0B42FF' }
-            fillColor = { 'rgba(230,238,255,0.5)' }
+            strokeColor = { '#FF5A5F' }
+            fillColor = { 'rgba(255, 90, 95, 0.1)' }
           />
         </MapView>
         <View style={styles.positonBox}>
@@ -297,7 +331,8 @@ class MapViewComponent extends React.Component {
 
 const mapDispatchToProps = dispatch => bindActionCreators(userLocationAction, dispatch)
 const mapStateToProps = state => ({
-  userLocation: state.userLocation
+  userLocation: state.userLocation,
+  carouselPosition: state.placesCarouselPosition
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapViewComponent)

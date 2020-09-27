@@ -1,5 +1,3 @@
-import { ActionSheetIOS } from "react-native";
-
 export default userLocation = (state = {}, action) => {
   switch (action.type) {
     case 'SET_USER_LOCALTION':
