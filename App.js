@@ -17,7 +17,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator>
           <Stack.Screen name="Map" component={MapView} options={{ title: 'Mapa', headerTintColor: 'black' }}/>
-          <Stack.Screen name="Detail" component={PlaceDetail} options={{ title: 'Detalhes do Imóvel' }}/>
+          <Stack.Screen name="Detail" component={PlaceDetail} options={{ title: 'Detalhes' }}/>
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

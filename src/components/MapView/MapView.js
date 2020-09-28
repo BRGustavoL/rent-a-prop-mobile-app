@@ -155,6 +155,7 @@ class MapViewComponent extends React.Component {
       id: place.id,
       title: place.title,
       description: place.description,
+      image: place.image,
       distance: place.distance
     })
     setTimeout(() => {

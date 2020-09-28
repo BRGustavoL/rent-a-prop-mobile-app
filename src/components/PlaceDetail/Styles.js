@@ -6,13 +6,15 @@ export default styles = StyleSheet.create({
   },
   content: {
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
     padding: 40
   },
   image: {
     width: Dimensions.get('window').width,
     height: 280
+  },
+  imageBackground: {
+    width: Dimensions.get('window').width,
+    height: 300,
   },
   title: {
     fontWeight: 'bold',
@@ -35,5 +37,25 @@ export default styles = StyleSheet.create({
   description: {
     marginTop: 40,
     fontSize: 16
+  },
+  touchButton: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    height: 240,
+    justifyContent: 'flex-end',
+  },
+  button: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
+    padding: 14,
+    borderRadius: 200,
+    backgroundColor: '#FF5A5F'
+  },
+  buttonLabel: {
+    marginLeft: 8,
+    color: 'white',
+    fontSize: 20,
+    fontWeight: '800',
   }
 })
