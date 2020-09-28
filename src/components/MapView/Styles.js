@@ -17,7 +17,7 @@ export default styles = StyleSheet.create({
     marginTop: 568,
     width: Dimensions.get('window').width,
     justifyContent: 'flex-start',
-    marginBottom: 40
+    marginBottom: 60
   },
   positonBoxTitle: {
     textAlign: 'center',
@@ -47,7 +47,8 @@ export default styles = StyleSheet.create({
     justifyContent: 'space-between',
     width: Dimensions.get('window').width - 40,
     height: 60,
-    borderRadius: 6
+    borderRadius: 6,
+    marginTop: -40
   },
   actionButtonsWithoutPlaces: {
     flexDirection: 'row',
@@ -55,7 +56,7 @@ export default styles = StyleSheet.create({
     width: Dimensions.get('window').width - 40,
     height: 60,
     borderRadius: 6,
-    marginTop: 100
+    marginTop: 60
   },
   placeButton: {
     alignItems: 'center',

@@ -1,6 +1,6 @@
 import * as React from 'react';
 import MapView, { Circle, Marker } from 'react-native-maps';
-import { View, TouchableOpacity, Text } from 'react-native';
+import { View, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import styles from './Styles'
@@ -35,7 +35,8 @@ class MapViewComponent extends React.Component {
     carouselItems: [
       {
         id: 0,
-        title: "Edifício Barry Colins",
+        title: 'Edifício Barry Colins',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
         distance: 0,
         coords: {
           latitude: -27.101241867015556,
@@ -138,21 +139,24 @@ class MapViewComponent extends React.Component {
 
   rentPlace = () => {
     this.setState({ isNearMeActivated: true })
-    let aux = {}
+    let place = {}
     this.state.carouselItems.forEach(el => {
       if (el.id === this.props.carouselPosition.index) {
-        aux = el.coords
+        place = {
+          id: el.id,
+          title: el.title,
+          description: el.description,
+          distance: el.distance,
+          image: el.image
+        }
       }
     })
-    console.log(aux)
-    this.mapRef.animateCamera({
-      center: {
-        latitude: aux.latitude,
-        longitude: aux.longitude,
-      },
-      heading: 100,
-      zoom: 16
-    }, 2000)
+    this.props.navigation.navigate('Detail', {
+      id: place.id,
+      title: place.title,
+      description: place.description,
+      distance: place.distance
+    })
     setTimeout(() => {
       this.setState({ isNearMeActivated: false })
     }, 1000)

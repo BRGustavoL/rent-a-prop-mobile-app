@@ -1,19 +1,27 @@
 import React from 'react'
 import { StatusBar } from 'expo-status-bar'
 import MapView from './src/components/MapView/MapView'
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider } from '@ui-kitten/components';
-
+import * as eva from '@eva-design/eva'
+import { NavigationContainer } from '@react-navigation/native'
+import { createStackNavigator } from '@react-navigation/stack'
+import PlaceDetail from './src/components/PlaceDetail/PlaceDetail'
 import store from './src/redux/store'
 import { Provider } from 'react-redux'
 
-export default function App() {
+const Stack = createStackNavigator()
+
+function App() {
   return (
     <Provider store={store}>
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <StatusBar style="auto" />
-        <MapView />
-      </ApplicationProvider>
+      <StatusBar style="auto" />
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Map" component={MapView} options={{ title: 'Mapa', headerTintColor: 'black' }}/>
+          <Stack.Screen name="Detail" component={PlaceDetail} options={{ title: 'Detalhes do Imóvel' }}/>
+        </Stack.Navigator>
+      </NavigationContainer>
     </Provider>
   )
 }
+
+export default App
