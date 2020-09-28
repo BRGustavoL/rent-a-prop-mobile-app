@@ -1,20 +1,34 @@
 import { StyleSheet, Dimensions } from 'react-native'
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 export default styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
-  },
-  content: {
-    width: Dimensions.get('window').width,
-    padding: 40
+    flex: 1,
+    
   },
   image: {
-    width: Dimensions.get('window').width,
-    height: 280
+    width: '100%',
+    height: 280,
   },
+  content: {
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 24,
+  },
+  touchButton: {
+    paddingLeft: 40,
+    paddingRight: 40,
+    justifyContent: 'flex-end',
+    height: hp('24%'),
+  },
+
   imageBackground: {
-    width: Dimensions.get('window').width,
-    height: 300,
+    width: '100%',
+    height: 280,
   },
   title: {
     fontWeight: 'bold',
@@ -35,14 +49,9 @@ export default styles = StyleSheet.create({
     marginRight: 4,
   },
   description: {
-    marginTop: 40,
-    fontSize: 16
-  },
-  touchButton: {
-    paddingLeft: 40,
-    paddingRight: 40,
-    height: 240,
-    justifyContent: 'flex-end',
+    marginTop: 30,
+    fontSize: 16,
+    color: 'rgba(0, 0, 0, 0.6)'
   },
   button: {
     alignItems: 'center',
@@ -51,11 +60,5 @@ export default styles = StyleSheet.create({
     padding: 14,
     borderRadius: 200,
     backgroundColor: '#FF5A5F'
-  },
-  buttonLabel: {
-    marginLeft: 8,
-    color: 'white',
-    fontSize: 20,
-    fontWeight: '800',
   }
 })

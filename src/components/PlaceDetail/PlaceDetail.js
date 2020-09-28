@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, ImageBackground, TouchableOpacity } from 'react-native'
+import { ScrollView , View, Text, ImageBackground, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialIcons'
 import styles from './Styles'
 
@@ -7,13 +7,12 @@ class PlaceDetail extends Component {
 
   state = {
     markerUrl: 'https://www.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png',
-    cabana: 'https://moraremteresopolis.com.br/wp-content/uploads/2019/05/cabana.png',
-    image: this.props.route.params.image
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.'
   }
 
   render() {
     return (
-      <View style={styles.container}>
+      <ScrollView style={styles.container}>
         <View style={styles.image}>
           <ImageBackground style={styles.imageBackground} source={this.props.route.params.image}></ImageBackground>
         </View>
@@ -22,9 +21,9 @@ class PlaceDetail extends Component {
             <Text style={styles.title}>{this.props.route.params.title}</Text>
             <View style={styles.distance}>
               <ImageBackground source={{ uri: this.state.markerUrl }} style={styles.markerImage}></ImageBackground>
-              <Text style={styles.distanceText}>A {this.props.route.params.distance}m de você</Text>
+              <Text style={styles.distanceText}>{this.props.route.params.distance}</Text>
             </View>
-            <Text style={styles.description}>{this.props.route.params.description}</Text>
+            <Text style={styles.description}>{this.state.description}</Text>
           </View>
         </View>
         <View style={styles.touchButton}>
@@ -32,7 +31,7 @@ class PlaceDetail extends Component {
             <Icon name="check" color={'white'} size={30} />
           </TouchableOpacity>
         </View>
-      </View>      
+      </ScrollView>      
     )
   }
 }

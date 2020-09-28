@@ -18,7 +18,7 @@ class PlaceCarousel extends Component {
           <Text style={styles.title}>{item.title}</Text>
           <View style={styles.mapInfo}>
             <ImageBackground source={{ uri: 'https://www.iconfinder.com/data/icons/small-n-flat/24/678111-map-marker-512.png' }} style={styles.markerImage}></ImageBackground>
-            <Text style={styles.distanceText}>{ (item.distance < 1000) ? `A ${item.distance}m de você` :  `A ${item.distance}km de você` }</Text>
+            <Text style={styles.distanceText}>{item.distance}</Text>
           </View>
         </View>
       </View>

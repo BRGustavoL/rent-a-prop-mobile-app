@@ -36,7 +36,7 @@ class MapViewComponent extends React.Component {
       {
         id: 0,
         title: 'Edifício Barry Colins',
-        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
+        description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
         distance: 0,
         coords: {
           latitude: -27.101241867015556,
@@ -72,7 +72,7 @@ class MapViewComponent extends React.Component {
       },
       {
         id: 3,
-        title: "Casa J. América 337D",
+        title: "Casa América",
         distance: 0,
         coords: {
           latitude: -27.100448248983373,
@@ -84,7 +84,7 @@ class MapViewComponent extends React.Component {
       },
       {
         id: 4,
-        title: "UNOESC",
+        title: "Unoesc",
         distance: 0,
         coords: {
           latitude: -27.1345326,
@@ -108,7 +108,7 @@ class MapViewComponent extends React.Component {
       },
       {
         id: 6,
-        title: "Casa do Tony Stark",
+        title: "Casa Stark",
         distance: 0,
         coords: {
           latitude: -27.092489372754393,
@@ -179,7 +179,7 @@ class MapViewComponent extends React.Component {
       remoduledCarouselItems.push({
         id: el.id,
         title: el.title,
-        distance: Number(this.returnCalculatedDistance(origin, marker), 10),
+        distance: this.returnCalculatedDistance(origin, marker),
         coords: el.coords,
         image: el.image
       })
@@ -198,10 +198,24 @@ class MapViewComponent extends React.Component {
   }
 
   returnCalculatedDistance = (origin, marker) => {
-    return getDistance(
+    let result = ''
+    let distance = getDistance(
       {latitude: origin.latitude, longitude: origin.longitude},
       {latitude: marker.latitude, longitude: marker.longitude}
     )
+    distance = distance.toString()
+    if (distance < 1000) {
+      result = `A ${distance}m de você`
+    }
+    if (distance > 1000) {
+      if (distance.length === 4) {
+        result = `A ${distance[0]}${(distance[1] === '0') ? '' : '.' + distance[1]}km de você`
+      }
+      if (distance.length === 5) {
+        result = `A ${distance[0]}${distance[1]}${(distance[2] === '0') ? '' : '.' + distance[2]}km de você`
+      }
+    }
+    return result
   }
 
   setOnEventLocation = (e) => { // TOQUE NA TELA
