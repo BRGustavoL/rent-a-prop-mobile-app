@@ -23,7 +23,7 @@ export default styles = StyleSheet.create({
     paddingLeft: 40,
     paddingRight: 40,
     justifyContent: 'flex-end',
-    height: hp('24%'),
+    height: hp('20%'),
   },
 
   imageBackground: {

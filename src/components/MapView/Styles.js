@@ -14,10 +14,9 @@ export default styles = StyleSheet.create({
     bottom: 0
   },
   positonBox: {
-    marginTop: 568,
+    marginTop: 500,
     width: Dimensions.get('window').width,
     justifyContent: 'flex-start',
-    marginBottom: 60
   },
   positonBoxTitle: {
     textAlign: 'center',
@@ -45,18 +44,22 @@ export default styles = StyleSheet.create({
   actionButtons: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: Dimensions.get('window').width - 40,
+    width: Dimensions.get('window').width,
+    paddingLeft: 20,
+    paddingRight: 20,
     height: 60,
     borderRadius: 6,
-    marginTop: -40
+    marginTop: 20
   },
   actionButtonsWithoutPlaces: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: Dimensions.get('window').width - 40,
+    justifyContent: 'center',
+    width: Dimensions.get('window').width,
+    paddingLeft: 20,
+    paddingRight: 20,
     height: 60,
     borderRadius: 6,
-    marginTop: 60
+    marginTop: 120
   },
   placeButton: {
     alignItems: 'center',
@@ -78,12 +81,20 @@ export default styles = StyleSheet.create({
     borderRadius: 14,
     backgroundColor: '#484848',
   },
-  homeButton: {
+  requestButtonSmall: {
     alignItems: 'center',
     justifyContent: 'center',
     padding: 14,
     backgroundColor: 'white',
-    borderRadius: 200
+    borderRadius: 14
+  },
+  requestButtonLarge: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 14,
+    backgroundColor: 'white',
+    borderRadius: 14,
+    width: Dimensions.get('window').width - 40
   },
   homeButtonText: {
     color: 'blue',

@@ -12,7 +12,6 @@ import { getDistance } from 'geolib'
 
 class MapViewComponent extends React.Component {
   state = {
-    isNearMeActivated: false,
     isUserLocation: false,
     defaulCoords: {
       id: Math.random(),
@@ -121,7 +120,7 @@ class MapViewComponent extends React.Component {
     ]
   }
 
-  NearMeButtonInactive = () => {
+  PlaceDetailButton = () => {
     return (
       <TouchableOpacity style={styles.placeButton} onPress={ () => this.rentPlace() }>
         <Icon name="near-me" color={'white'} size={30} />
@@ -129,16 +128,35 @@ class MapViewComponent extends React.Component {
     )
   }
 
-  NearMeButtonActive = () => {
+  RequestLocationButtonSmall = () => {
     return (
-      <TouchableOpacity style={styles.placeButtonActive} onPress={ () => this.setState({ isNearMeActivated: false }) }>
-        <Icon name="clear" color={'white'} size={30} />
+      <TouchableOpacity style={styles.requestButtonSmall} onPress={ () => this.requestUserLocation() }>
+        <Icon name="my-location" color={'#FF5A5F'} size={30} />
       </TouchableOpacity>
     )
   }
 
+  RequestLocationButtonLarge = () => {
+    return (
+      <TouchableOpacity style={styles.requestButtonLarge} onPress={ () => this.requestUserLocation() }>
+        <Icon name="my-location" color={'#FF5A5F'} size={30} />
+      </TouchableOpacity>
+    )
+  }
+
+  RequestLocationButton = () => {
+    return (this.state.isUserLocation) ? this.RequestLocationButtonSmall() : this.RequestLocationButtonLarge()
+  }
+
+  NearMeButton = () => {
+    return (this.state.isUserLocation) ? this.PlaceDetailButton() : null
+  }
+
+  PlaceCarouselComponent = () => {
+    return (this.state.isUserLocation) ? <PlaceCarousel places={this.state.carouselItems}/> : null
+  }
+
   rentPlace = () => {
-    this.setState({ isNearMeActivated: true })
     let place = {}
     this.state.carouselItems.forEach(el => {
       if (el.id === this.props.carouselPosition.index) {
@@ -158,9 +176,6 @@ class MapViewComponent extends React.Component {
       image: place.image,
       distance: place.distance
     })
-    setTimeout(() => {
-      this.setState({ isNearMeActivated: false })
-    }, 1000)
   }
 
   updateItemsDistance = () => {
@@ -187,14 +202,6 @@ class MapViewComponent extends React.Component {
     this.setState({
       carouselItems: remoduledCarouselItems
     })
-  }
-
-  NearMeButton = () => {
-    return (this.state.isNearMeActivated) ? this.NearMeButtonActive() : this.NearMeButtonInactive()
-  }
-
-  PlaceCarouselComponent = () => {
-    return (this.state.isUserLocation) ? <PlaceCarousel places={this.state.carouselItems}/> : null
   }
 
   returnCalculatedDistance = (origin, marker) => {
@@ -334,13 +341,12 @@ class MapViewComponent extends React.Component {
             fillColor = { 'rgba(255, 90, 95, 0.1)' }
           />
         </MapView>
+        
         <View style={styles.positonBox}>
           { this.PlaceCarouselComponent() }
         </View>
         <View style={this.state.isUserLocation ? styles.actionButtons : styles.actionButtonsWithoutPlaces}>
-          <TouchableOpacity style={styles.homeButton} onPress={ () => this.requestUserLocation() }>
-            <Icon name="my-location" color={'#FF5A5F'} size={30} />
-          </TouchableOpacity>
+          { this.RequestLocationButton() }
           { this.NearMeButton() }
         </View>
       </View>
