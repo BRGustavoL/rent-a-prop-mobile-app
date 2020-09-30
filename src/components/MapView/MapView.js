@@ -259,7 +259,7 @@ class MapViewComponent extends React.Component {
       console.log('Permission to access location was denied');
     }
 
-    let location = await Location.getCurrentPositionAsync({})
+    let location = await Location.getCurrentPositionAsync({accuracy:Location.Accuracy.High})
     
     const position = {
       id: Math.random(),
